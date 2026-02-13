@@ -543,8 +543,77 @@ body {
 }
 
 /* 适配移动端 */
+@media (max-width: 480px) {
+    #game-container {
+        height: 100vh;
+        max-height: 100vh;
+        border-radius: 0;
+        border: none;
+    }
+
+    .main-title {
+        font-size: 2.8rem;
+    }
+
+    .game-header {
+        padding: 16px 20px;
+    }
+
+    #scene-container {
+        padding: 0 20px;
+    }
+
+    .story-wrapper {
+        font-size: 1rem;
+        margin: 20px 0;
+        line-height: 1.6;
+    }
+
+    .result-highlight {
+        padding: 30px 15px;
+        font-size: 1.1rem;
+        min-height: 150px;
+    }
+
+    .game-footer {
+        padding: 16px 20px 24px;
+    }
+
+    .choice-btn {
+        padding: 14px 18px;
+        font-size: 0.85rem;
+        border-radius: 12px;
+    }
+
+    .action-btn {
+        padding: 16px;
+        font-size: 0.95rem;
+        border-radius: 12px;
+    }
+
+    .ending-icon {
+        font-size: 3.5rem;
+        margin-bottom: 16px;
+    }
+
+    .ending-title {
+        font-size: 1.6rem;
+        margin-bottom: 16px;
+    }
+
+    .ending-text {
+        font-size: 0.95rem;
+        line-height: 1.6;
+        margin-bottom: 30px;
+    }
+}
+
 @media (max-height: 700px) {
-    #game-container { height: 100vh; border-radius: 0; }
+    #game-container { height: 100vh; max-height: 100vh; border-radius: 0; }
+    .main-title { font-size: 2.5rem; }
+    .sub-title { margin-bottom: 30px; }
+    .story-wrapper { margin: 15px 0; }
+    .result-highlight { padding: 20px 10px; }
 }
 
 /* 结局特定主题配色 */
