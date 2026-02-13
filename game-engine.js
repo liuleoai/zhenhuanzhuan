@@ -25,11 +25,31 @@ class GameEngine {
         const startBtn = document.getElementById('start-btn');
         if (startBtn) {
             startBtn.onclick = () => {
+                const apiKeyInput = document.getElementById('api-key-input');
+                const userKey = apiKeyInput ? apiKeyInput.value.trim() : '';
+                
+                if (userKey) {
+                    // 使用用户输入的 Key
+                    gameData.apiKey = userKey;
+                    localStorage.setItem('zhenhuan_api_key', userKey);
+                } else if (!gameData.apiKey) {
+                    // 既没有用户输入，默认数据中也没有 Key
+                    alert('请输入 API Key 开启重生之路');
+                    return;
+                }
+
                 const startScreen = document.getElementById('start-screen');
                 const gameScreen = document.getElementById('game-screen');
                 if (startScreen) startScreen.classList.remove('active');
                 if (gameScreen) gameScreen.style.display = 'flex';
             };
+        }
+
+        // 预填充上次保存的 Key
+        const savedKey = localStorage.getItem('zhenhuan_api_key');
+        const apiKeyInput = document.getElementById('api-key-input');
+        if (savedKey && apiKeyInput) {
+            apiKeyInput.value = savedKey;
         }
 
         const restartBtn = document.getElementById('restart-btn');

@@ -1,5 +1,5 @@
 const gameData = {
-    apiKey: "pat_SOb0RIwINvEUH3V6UPTDckn3CcFte3Skwx9DOVPT354Hyu4OXsuqkTBGKZvIHzV3",
+    apiKey: "", // 请在启动页面输入您的 API Key，或在此处填写
     workflowId: "7606259503902179364",
     
     endings: {
