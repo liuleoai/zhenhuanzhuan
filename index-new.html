@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>穿越甄嬛传-华妃重生</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="game-container">
+        <div id="start-screen">
+            <div class="title-container">
+                <h1 class="game-title">穿越甄嬛传</h1>
+                <h2 class="game-subtitle">华妃重生</h2>
+            </div>
+            <div class="character-intro">
+                <p>年世兰，年羹尧之妹，雍正帝宠妃</p>
+                <p>前世因骄纵跋扈、争宠夺爱，最终被赐死</p>
+                <p>今朝重生，命运能否改写？</p>
+            </div>
+            <button id="start-btn" class="game-btn">开始游戏</button>
+        </div>
+
+        <div id="game-screen" style="display: none;">
+            <div class="game-header">
+                <div class="status-bar">
+                    <div class="status-item">
+                        <span class="status-label">皇恩</span>
+                        <div class="status-bar-inner">
+                            <div id="favor-bar" class="status-fill"></div>
+                        </div>
+                        <span id="favor-value" class="status-value">50</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="status-label">权势</span>
+                        <div class="status-bar-inner">
+                            <div id="power-bar" class="status-fill"></div>
+                        </div>
+                        <span id="power-value" class="status-value">50</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="status-label">心机</span>
+                        <div class="status-bar-inner">
+                            <div id="wisdom-bar" class="status-fill"></div>
+                        </div>
+                        <span id="wisdom-value" class="status-value">50</span>
+                    </div>
+                </div>
+                <div id="chapter-info">
+                    <span id="chapter-title">第一章</span>
+                    <span id="chapter-name">重生选秀</span>
+                </div>
+            </div>
+
+            <div id="scene-container">
+                <div id="scene-image"></div>
+                <div id="story-content"></div>
+                <button id="continue-btn" class="continue-btn" style="display: none;">继续</button>
+            </div>
+
+            <div id="choices-container"></div>
+
+            <div id="feedback-container" style="display: none;"></div>
+
+            <div class="game-controls">
+                <button id="restart-btn" class="control-btn">重来</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="game-data-new.js"></script>
+    <script src="game-engine-new.js"></script>
+</body>
+</html>

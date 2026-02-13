@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>甄嬛传之华妃重生 · 2026 Future Edition</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- 2026 动态背景 -->
+    <div class="glass-bg"></div>
+    
+    <!-- 故宫装饰纹样容器 -->
+    <div class="forbidden-city-decor">
+        <div class="cloud-pattern top-left"></div>
+        <div class="cloud-pattern bottom-right"></div>
+    </div>
+
+    <div id="game-container">
+        <!-- 启动层 -->
+        <div id="start-screen" class="overlay active">
+            <h1 class="main-title">甄嬛传</h1>
+            <p class="sub-title">华妃重生 · Year of the Phoenix</p>
+            <button id="start-btn" class="glow-btn">开启重生</button>
+        </div>
+
+        <!-- 游戏主屏幕 -->
+        <div id="game-screen" style="display: none; flex-direction: column; height: 100%;">
+            <header class="game-header">
+                <div class="game-logo-area">
+                    <span class="logo-text">甄嬛传之华妃重生</span>
+                </div>
+                <button id="restart-btn" class="icon-btn">↺</button>
+            </header>
+
+            <main id="scene-container">
+                <div id="story-content" class="story-wrapper"></div>
+                <div id="feedback-container" class="feedback-panel" style="display: none;"></div>
+            </main>
+
+            <footer class="game-footer">
+                <div id="loading-overlay" class="loading-overlay" style="display: none;">
+                    <div class="loading-spinner"></div>
+                </div>
+                
+                <div id="choices-container" class="choices-grid"></div>
+                <button id="continue-btn" class="action-btn" style="display: none;">继续步入</button>
+            </footer>
+        </div>
+    </div>
+
+    <script src="game-data.js"></script>
+    <script src="game-engine.js"></script>
+</body>
+</html>

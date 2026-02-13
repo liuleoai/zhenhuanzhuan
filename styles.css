@@ -1,0 +1,558 @@
+:root {
+    /* 2026 未来主义 & 宫廷美学色彩 */
+    --gold: #e5c07b;
+    --imperial-gold: #d4af37;
+    --forbidden-red: #9e1a1a; /* 更明亮的宫墙红 */
+    --wall-red: #720909; /* 深红基调 */
+    --gold-glow: rgba(212, 175, 55, 0.4);
+    --red-glow: rgba(158, 26, 26, 0.5);
+    --bg-black: #0a0202; /* 带有极细微红色的黑色 */
+    --card-bg: rgba(20, 5, 5, 0.75); /* 深红卡片背景 */
+    --accent-red: #ff3b30;
+    --text-primary: #ffffff;
+    --text-secondary: rgba(255, 255, 255, 0.7);
+    --glass-border: rgba(158, 26, 26, 0.3); /* 红色边框 */
+    --fluid-speed: 12s;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-font-smoothing: antialiased;
+}
+
+body {
+    background-color: var(--bg-black);
+    color: var(--text-primary);
+    font-family: "SF Pro Display", "PingFang SC", system-ui, -apple-system, sans-serif;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* 2026 流体背景 */
+.glass-bg {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    background: var(--bg-black);
+    overflow: hidden;
+}
+
+.glass-bg::before, .glass-bg::after {
+    content: '';
+    position: absolute;
+    width: 80vw;
+    height: 80vw;
+    border-radius: 50%;
+    filter: blur(100px);
+    opacity: 0.15;
+    animation: fluid var(--fluid-speed) infinite alternate ease-in-out;
+}
+
+/* 2026 流体背景 - 加强红色渲染 */
+.glass-bg::before {
+    background: radial-gradient(circle, var(--forbidden-red) 0%, transparent 80%);
+    opacity: 0.3; /* 增加不透明度 */
+    top: -10%;
+    left: -5%;
+}
+
+.glass-bg::after {
+    background: radial-gradient(circle, var(--wall-red) 0%, transparent 70%);
+    opacity: 0.25;
+    bottom: -10%;
+    right: -5%;
+}
+
+@keyframes fluid {
+    0% { transform: translate(0, 0) scale(1); }
+    100% { transform: translate(10%, 15%) scale(1.1); }
+}
+
+/* 故宫装饰纹样 */
+.forbidden-city-decor {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 10;
+}
+
+/* 故宫装饰纹样 - 调整为红色系 */
+.cloud-pattern {
+    position: absolute;
+    width: 300px;
+    height: 300px;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M10,50 Q25,30 40,50 T70,50 T100,50" fill="none" stroke="%239e1a1a" stroke-width="0.4" opacity="0.5"/></svg>');
+    opacity: 0.15;
+}
+
+.cloud-pattern.top-left { top: -50px; left: -50px; transform: rotate(-15deg); }
+.cloud-pattern.bottom-right { bottom: -50px; right: -50px; transform: rotate(165deg); }
+
+#game-container {
+    width: 100%;
+    max-width: 440px;
+    height: 90vh;
+    max-height: 850px;
+    background: var(--card-bg);
+    backdrop-filter: blur(40px) saturate(180%);
+    border: 1px solid var(--glass-border);
+    border-radius: 32px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 40px 100px rgba(0,0,0,0.9), inset 0 0 60px rgba(158, 26, 26, 0.15);
+    overflow: hidden;
+}
+
+/* 顶部标志区域 */
+.game-logo-area {
+    display: flex;
+    flex-direction: column;
+}
+
+.logo-text {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--imperial-gold);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    position: relative;
+}
+
+.logo-text::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 20px;
+    height: 1px;
+    background: var(--imperial-gold);
+}
+
+/* 极简启动页 */
+.overlay {
+    position: absolute;
+    inset: 0;
+    background: #000;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 40px;
+    transition: transform 0.8s cubic-bezier(0.8, 0, 0.2, 1), opacity 0.6s ease;
+}
+
+.overlay:not(.active) {
+    transform: translateY(-100%);
+    opacity: 0;
+    pointer-events: none;
+}
+
+.main-title {
+    font-size: 3.5rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    background: linear-gradient(135deg, #fff 0%, var(--imperial-gold) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 8px;
+}
+
+.sub-title {
+    font-size: 0.75rem;
+    letter-spacing: 0.4em;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    margin-bottom: 60px;
+}
+
+/* 启动页按钮 - 红色发光 */
+.glow-btn {
+    background: linear-gradient(135deg, var(--forbidden-red) 0%, var(--wall-red) 100%);
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 20px 60px;
+    border-radius: 100px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.2, 1, 0.3, 1);
+    box-shadow: 0 10px 30px var(--red-glow);
+}
+
+.glow-btn:hover {
+    transform: scale(1.05) translateY(-2px);
+    box-shadow: 0 20px 40px var(--red-glow);
+    filter: brightness(1.2);
+}
+
+/* 游戏头部 */
+.game-header {
+    padding: 32px 32px 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(212, 175, 55, 0.1);
+}
+
+.icon-btn {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--glass-border);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.icon-btn:hover { background: rgba(255,255,255,0.1); }
+
+/* 内容区域 */
+#scene-container {
+    flex: 1;
+    overflow-y: auto;
+    padding: 0 32px;
+    mask-image: linear-gradient(to bottom, transparent, black 5%, black 95%, transparent);
+}
+
+#scene-container::-webkit-scrollbar { width: 0; }
+
+.story-wrapper {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    font-weight: 400;
+    color: var(--text-primary);
+    margin: 40px 0;
+    animation: fadeIn 0.8s ease-out;
+    text-align: justify;
+}
+
+.feedback-panel {
+    background: rgba(139, 0, 0, 0.1);
+    border-radius: 20px;
+    padding: 24px;
+    margin: 24px 0;
+    border: 1px solid rgba(212, 175, 55, 0.2);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: var(--gold);
+    animation: slideUp 0.6s cubic-bezier(0.2, 1, 0.3, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.feedback-panel::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background: var(--imperial-gold);
+}
+
+/* 交互页脚 */
+/* 交互页脚 - 红色渐变增强沉浸感 */
+.game-footer {
+    padding: 24px 32px 40px;
+    background: linear-gradient(to top, rgba(15, 2, 2, 0.95) 70%, transparent);
+}
+
+.choices-grid {
+    display: grid;
+    gap: 12px;
+}
+
+.choice-btn {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--glass-border);
+    color: var(--text-primary);
+    padding: 18px 24px;
+    border-radius: 16px;
+    text-align: left;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.2, 1, 0.3, 1);
+}
+
+/* 选项按钮 - 红色悬停反馈 */
+.choice-btn:hover {
+    background: rgba(158, 26, 26, 0.15);
+    border-color: var(--forbidden-red);
+    color: #fff;
+    transform: translateX(4px);
+    box-shadow: -5px 0 15px rgba(158, 26, 26, 0.1);
+}
+
+/* 继续按钮 - 华丽红金配色 */
+.action-btn {
+    width: 100%;
+    background: linear-gradient(135deg, var(--forbidden-red) 0%, var(--wall-red) 100%);
+    color: #fff;
+    border: 1px solid var(--glass-border);
+    padding: 20px;
+    border-radius: 16px;
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 10px 25px rgba(158, 26, 26, 0.3);
+}
+
+.action-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 15px 35px rgba(158, 26, 26, 0.5);
+    filter: brightness(1.1);
+}
+
+/* 加载动画 */
+.loading-overlay {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.loading-spinner {
+    width: 30px;
+    height: 30px;
+    border: 2px solid rgba(212, 175, 55, 0.1);
+    border-top-color: var(--imperial-gold);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.loading-spinner-small {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    vertical-align: middle;
+    margin-right: 8px;
+}
+
+/* 结局界面精美样式 */
+.ending-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 20px 0 40px;
+    animation: fadeIn 1.2s ease-out;
+}
+
+.ending-badge {
+    background: var(--forbidden-red);
+    color: #fff;
+    padding: 6px 16px;
+    border-radius: 100px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    margin-bottom: 30px;
+    box-shadow: 0 0 20px var(--red-glow);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.ending-icon {
+    font-size: 5rem;
+    margin-bottom: 24px;
+    filter: drop-shadow(0 0 20px var(--gold-glow));
+    animation: float 4s infinite ease-in-out;
+}
+
+.ending-title {
+    font-size: 2.2rem;
+    font-weight: 800;
+    margin-bottom: 24px;
+    background: linear-gradient(135deg, #fff 0%, var(--imperial-gold) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.ending-text {
+    font-size: 1.05rem;
+    line-height: 1.8;
+    color: var(--text-secondary);
+    margin-bottom: 40px;
+    padding: 0 10px;
+}
+
+.ending-footer {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.restart-action-btn {
+    min-width: 200px;
+    font-size: 1rem !important;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+/* 选项顺次滑入动画 */
+.choices-grid .choice-btn {
+    opacity: 0;
+    transform: translateY(10px);
+    animation: slideInUp 0.5s cubic-bezier(0.2, 1, 0.3, 1) forwards;
+}
+
+@keyframes slideInUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* 结局样式扩展 */
+.ending-card {
+    text-align: center;
+    padding: 40px 20px;
+}
+
+.ending-icon {
+    font-size: 4rem;
+    margin-bottom: 24px;
+    display: block;
+    filter: drop-shadow(0 0 20px var(--imperial-gold));
+}
+
+.ending-title {
+    font-size: 2rem;
+    color: var(--imperial-gold);
+    margin-bottom: 24px;
+    font-weight: 800;
+}
+
+.ending-text {
+    font-size: 1.1rem;
+    line-height: 2;
+    color: var(--text-primary);
+    margin-bottom: 40px;
+}
+
+/* 结果高亮样式 - 实现单独页面的感觉 */
+.result-highlight {
+    font-size: 1.25rem;
+    line-height: 2;
+    color: var(--gold);
+    text-align: center;
+    padding: 60px 20px;
+    background: radial-gradient(circle at center, rgba(158, 26, 26, 0.1) 0%, transparent 70%);
+    border-radius: 24px;
+    animation: fadeInScale 0.8s cubic-bezier(0.2, 1, 0.3, 1);
+    min-height: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+/* 流式文字打字机效果动画 */
+.streaming-text-node {
+    display: inline;
+    animation: charFadeIn 0.3s ease-out forwards;
+}
+
+@keyframes charFadeIn {
+    from { opacity: 0; transform: translateY(5px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* 闪烁光标 */
+.typing-cursor {
+    display: inline-block;
+    width: 2px;
+    height: 1.2em;
+    background: var(--imperial-gold);
+    margin-left: 4px;
+    vertical-align: middle;
+    animation: blink 0.8s infinite;
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+}
+
+/* 流式加载中的骨架感 */
+.result-loading-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    color: var(--text-secondary);
+    font-size: 1rem;
+    opacity: 0.6;
+}
+
+.result-loading-dots::after {
+    content: '';
+    animation: dots 1.5s infinite;
+}
+
+@keyframes dots {
+    0% { content: ''; }
+    25% { content: '.'; }
+    50% { content: '..'; }
+    75% { content: '...'; }
+}
+
+@keyframes fadeInScale {
+    from { 
+        opacity: 0; 
+        transform: scale(0.95) translateY(10px); 
+    }
+    to { 
+        opacity: 1; 
+        transform: scale(1) translateY(0); 
+    }
+}
+
+/* 适配移动端 */
+@media (max-height: 700px) {
+    #game-container { height: 100vh; border-radius: 0; }
+}
+
+/* 结局特定主题配色 */
+.ending-phoenix { --card-bg: rgba(40, 10, 10, 0.9); --glass-border: var(--imperial-gold); }
+.ending-cold-palace { --card-bg: rgba(10, 20, 30, 0.9); --glass-border: #add8e6; --forbidden-red: #4682b4; }
+.ending-power { --card-bg: rgba(30, 0, 0, 0.95); --glass-border: var(--imperial-gold); --wall-red: #4a0000; }
+.ending-freedom { --card-bg: rgba(10, 30, 10, 0.9); --glass-border: #90ee90; --forbidden-red: #228b22; }
+.ending-sisterhood { --card-bg: rgba(40, 20, 30, 0.9); --glass-border: #ffb6c1; --forbidden-red: #db7093; }
+.ending-tragic { --card-bg: rgba(0, 0, 0, 0.95); --glass-border: #333; --forbidden-red: #660000; }
+.ending-legend { --card-bg: rgba(20, 10, 40, 0.9); --glass-border: #dda0dd; --forbidden-red: #800080; }
+.ending-love { --card-bg: rgba(50, 10, 20, 0.9); --glass-border: #ff69b4; --forbidden-red: #ff1493; }
