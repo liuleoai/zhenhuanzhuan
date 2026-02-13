@@ -2,17 +2,21 @@
     /* 2026 未来主义 & 宫廷美学色彩 */
     --gold: #e5c07b;
     --imperial-gold: #d4af37;
-    --forbidden-red: #9e1a1a; /* 更明亮的宫墙红 */
-    --wall-red: #720909; /* 深红基调 */
+    --forbidden-red: #9e1a1a; 
+    --wall-red: #720909;
+    --jade-green: #00a86b; /* 翡翠绿 */
+    --royal-purple: #6a0dad; /* 皇家紫 */
     --gold-glow: rgba(212, 175, 55, 0.4);
     --red-glow: rgba(158, 26, 26, 0.5);
-    --bg-black: #0a0202; /* 带有极细微红色的黑色 */
-    --card-bg: rgba(20, 5, 5, 0.75); /* 深红卡片背景 */
+    --jade-glow: rgba(0, 168, 107, 0.4);
+    --purple-glow: rgba(106, 13, 173, 0.4);
+    --bg-black: #050101;
+    --card-bg: rgba(20, 5, 5, 0.85);
     --accent-red: #ff3b30;
     --text-primary: #ffffff;
-    --text-secondary: rgba(255, 255, 255, 0.7);
-    --glass-border: rgba(158, 26, 26, 0.3); /* 红色边框 */
-    --fluid-speed: 12s;
+    --text-secondary: rgba(255, 255, 255, 0.8);
+    --glass-border: rgba(212, 175, 55, 0.2);
+    --fluid-speed: 15s;
 }
 
 * {
@@ -43,30 +47,55 @@ body {
     overflow: hidden;
 }
 
+/* 2026 流体背景 - 增加多色氛围光 */
 .glass-bg::before, .glass-bg::after {
     content: '';
     position: absolute;
-    width: 80vw;
-    height: 80vw;
+    width: 100vw;
+    height: 100vw;
     border-radius: 50%;
-    filter: blur(100px);
-    opacity: 0.15;
+    filter: blur(80px);
+    opacity: 0.2;
     animation: fluid var(--fluid-speed) infinite alternate ease-in-out;
 }
 
-/* 2026 流体背景 - 加强红色渲染 */
 .glass-bg::before {
-    background: radial-gradient(circle, var(--forbidden-red) 0%, transparent 80%);
-    opacity: 0.3; /* 增加不透明度 */
-    top: -10%;
-    left: -5%;
+    background: radial-gradient(circle, var(--forbidden-red) 0%, var(--royal-purple) 30%, transparent 70%);
+    top: -20%;
+    left: -10%;
+    animation-delay: -2s;
 }
 
 .glass-bg::after {
-    background: radial-gradient(circle, var(--wall-red) 0%, transparent 70%);
-    opacity: 0.25;
-    bottom: -10%;
-    right: -5%;
+    background: radial-gradient(circle, var(--wall-red) 0%, var(--jade-green) 40%, transparent 80%);
+    bottom: -20%;
+    right: -10%;
+}
+
+/* 增加第三个流体光球 */
+.glass-bg-extra {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+}
+
+.glass-bg-extra::before {
+    content: '';
+    position: absolute;
+    width: 60vw;
+    height: 60vw;
+    background: radial-gradient(circle, var(--imperial-gold) 0%, transparent 70%);
+    filter: blur(100px);
+    opacity: 0.1;
+    top: 30%;
+    left: 20%;
+    animation: fluid-alt 20s infinite alternate linear;
+}
+
+@keyframes fluid-alt {
+    0% { transform: translate(0, 0) rotate(0deg); }
+    100% { transform: translate(-10%, 10%) rotate(90deg); }
 }
 
 @keyframes fluid {
@@ -276,27 +305,44 @@ body {
     gap: 12px;
 }
 
+/* 选项按钮 - 增加流光溢彩效果 */
 .choice-btn {
-    background: rgba(255, 255, 255, 0.03);
+    background: linear-gradient(90deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.06) 50%, rgba(255,255,255,0.03) 100%);
+    background-size: 200% 100%;
     border: 1px solid var(--glass-border);
     color: var(--text-primary);
     padding: 18px 24px;
     border-radius: 16px;
     text-align: left;
-    font-size: 0.9rem;
+    font-size: 0.95rem;
     font-weight: 500;
     cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.2, 1, 0.3, 1);
-    touch-action: manipulation; /* 优化 iPhone 响应速度 */
+    transition: all 0.4s cubic-bezier(0.2, 1, 0.3, 1);
+    touch-action: manipulation;
+    position: relative;
+    overflow: hidden;
 }
 
-/* 选项按钮 - 红色悬停反馈 */
 .choice-btn:hover {
-    background: rgba(158, 26, 26, 0.15);
-    border-color: var(--forbidden-red);
-    color: #fff;
-    transform: translateX(4px);
-    box-shadow: -5px 0 15px rgba(158, 26, 26, 0.1);
+    background-position: 100% 0;
+    border-color: var(--imperial-gold);
+    transform: translateX(8px) scale(1.02);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.3), 0 0 15px var(--gold-glow);
+}
+
+.choice-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.1), transparent);
+    transition: 0.5s;
+}
+
+.choice-btn:hover::before {
+    left: 100%;
 }
 
 /* 继续按钮 - 华丽红金配色 */
@@ -374,6 +420,13 @@ body {
     margin-bottom: 30px;
     box-shadow: 0 0 20px var(--red-glow);
     border: 1px solid rgba(255, 255, 255, 0.2);
+    animation: pulse-gold 2s infinite;
+}
+
+@keyframes pulse-gold {
+    0% { box-shadow: 0 0 10px var(--red-glow); }
+    50% { box-shadow: 0 0 25px var(--gold-glow); }
+    100% { box-shadow: 0 0 10px var(--red-glow); }
 }
 
 .ending-icon {
@@ -390,6 +443,7 @@ body {
     background: linear-gradient(135deg, #fff 0%, var(--imperial-gold) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+    text-shadow: 0 0 20px var(--gold-glow), 0 0 40px var(--red-glow);
 }
 
 .ending-text {
@@ -468,23 +522,26 @@ body {
     margin-bottom: 40px;
 }
 
-/* 结果高亮样式 - 实现单独页面的感觉 */
+/* 结果高亮页 - 增加华丽氛围 */
 .result-highlight {
     font-size: 1.25rem;
     line-height: 1.8;
-    color: var(--gold);
+    color: #fff;
+    text-shadow: 0 0 10px var(--gold-glow);
     text-align: center;
     padding: 40px 20px;
-    background: radial-gradient(circle at center, rgba(158, 26, 26, 0.1) 0%, transparent 70%);
+    background: radial-gradient(circle at center, rgba(158, 26, 26, 0.2) 0%, rgba(106, 13, 173, 0.1) 50%, transparent 80%);
     border-radius: 24px;
     animation: fadeInScale 0.8s cubic-bezier(0.2, 1, 0.3, 1);
-    min-height: 200px;
+    min-height: 220px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     width: 100%;
     margin: 0 auto;
+    border: 1px solid rgba(212, 175, 55, 0.1);
+    box-shadow: inset 0 0 30px rgba(158, 26, 26, 0.2);
 }
 
 #streaming-result {
