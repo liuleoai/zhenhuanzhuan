@@ -192,10 +192,21 @@ class GameEngine {
 
                                         // 清洗文本并更新展示
                                         const fullCleanedText = this.cleanStreamingText(this.streamingResultText);
-                                        const currentTextCount = streamingElem.textContent.length;
+                                        const currentTextInDom = streamingElem.textContent;
                                         
-                                        if (fullCleanedText.length > currentTextCount) {
-                                            const newChars = fullCleanedText.substring(currentTextCount);
+                                        // 如果清洗后的文本不以当前 DOM 文本开头，说明之前的清洗逻辑误伤或现在识别出了 JSON 包装
+                                        // 此时需要清空重新渲染，以保证不会出现 {"result": " 这种乱码
+                                        if (fullCleanedText.length > 0 && !fullCleanedText.startsWith(currentTextInDom)) {
+                                            streamingElem.innerHTML = '';
+                                            for (const char of fullCleanedText) {
+                                                const charSpan = document.createElement('span');
+                                                charSpan.className = 'streaming-text-node';
+                                                charSpan.textContent = char;
+                                                streamingElem.appendChild(charSpan);
+                                            }
+                                        } else if (fullCleanedText.length > currentTextInDom.length) {
+                                            // 正常追加新字符
+                                            const newChars = fullCleanedText.substring(currentTextInDom.length);
                                             for (const char of newChars) {
                                                 const charSpan = document.createElement('span');
                                                 charSpan.className = 'streaming-text-node';
@@ -317,8 +328,12 @@ class GameEngine {
         cleaned = cleaned.replace(/```\s*/g, '');
         
         // 2. 处理 JSON 结构
-        // 如果是以 { 开始，尝试提取 result/content 字段
         if (cleaned.startsWith('{')) {
+            // 如果只有左大括号，或者还没到 key 的引号，先返回空，避免展示乱码
+            if (cleaned.length < 5 && !cleaned.includes('"')) {
+                return '';
+            }
+
             try {
                 // 尝试解析完整的 JSON
                 const parsed = JSON.parse(cleaned + (cleaned.endsWith('}') ? '' : '"}'));
@@ -326,14 +341,19 @@ class GameEngine {
                     return parsed.result || parsed.content || parsed.summary;
                 }
             } catch (e) {
-                // 如果解析失败（通常是因为 JSON 还没传输完），使用正则提取
-                // 移除开头的 {"result": " 或类似的包装
-                let partial = cleaned.replace(/^\{\s*"(result|content|summary)"\s*:\s*"/, '');
-                // 移除可能的转义字符和结尾包装
-                partial = partial.replace(/\\n/g, '\n')
-                               .replace(/\\"/g, '"')
-                               .replace(/"\s*\}?$/, '');
-                return partial;
+                // 如果解析失败，使用更稳健的正则提取内容
+                // 寻找第一个冒号后的第一个引号之后的内容
+                const match = cleaned.match(/:\s*"([^]*)$/);
+                if (match) {
+                    let content = match[1];
+                    // 处理转义字符和结尾引号/大括号
+                    content = content.replace(/\\n/g, '\n')
+                                   .replace(/\\"/g, '"')
+                                   .replace(/"\s*\}?$/, '');
+                    return content;
+                }
+                // 如果连冒号都没出现，说明还在传输 key，返回空
+                return '';
             }
         }
         
