@@ -23,18 +23,50 @@ class GameEngine {
 
     setupEventListeners() {
         const startBtn = document.getElementById('start-btn');
+        const startScreen = document.getElementById('start-screen');
+        const gameScreen = document.getElementById('game-screen');
+        
+        // 初始化粒子背景
+        this.createStartParticles();
+
         if (startBtn) {
             startBtn.onclick = () => {
-                const startScreen = document.getElementById('start-screen');
-                const gameScreen = document.getElementById('game-screen');
-                if (startScreen) startScreen.classList.remove('active');
-                if (gameScreen) gameScreen.style.display = 'flex';
+                if (startScreen) {
+                    startScreen.style.opacity = '0';
+                    setTimeout(() => {
+                        startScreen.style.display = 'none';
+                        if (gameScreen) gameScreen.style.display = 'flex';
+                    }, 800);
+                }
             };
         }
 
         const restartBtn = document.getElementById('restart-btn');
         if (restartBtn) {
             restartBtn.onclick = () => this.restart();
+        }
+    }
+
+    createStartParticles() {
+        const container = document.getElementById('start-particles');
+        if (!container) return;
+
+        for (let i = 0; i < 30; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            
+            const size = Math.random() * 3 + 1;
+            const left = Math.random() * 100;
+            const duration = Math.random() * 5 + 5;
+            const delay = Math.random() * 5;
+
+            particle.style.width = `${size}px`;
+            particle.style.height = `${size}px`;
+            particle.style.left = `${left}%`;
+            particle.style.animationDuration = `${duration}s`;
+            particle.style.animationDelay = `${delay}s`;
+
+            container.appendChild(particle);
         }
     }
 

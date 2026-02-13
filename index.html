@@ -19,11 +19,23 @@
 
     <div id="game-container">
         <!-- 启动层 -->
-        <div id="start-screen" class="overlay active">
-            <h1 class="main-title">甄嬛传</h1>
-            <p class="sub-title">华妃重生 · Year of the Phoenix</p>
-            <button id="start-btn" class="glow-btn">开启重生</button>
+    <div id="start-screen" class="start-screen">
+        <div class="start-content">
+            <div class="start-title-wrapper">
+                <h1 class="start-title">
+                    <span class="title-top">甄嬛传之</span>
+                    <span class="title-bottom">华妃重生</span>
+                </h1>
+                <div class="title-decoration"></div>
+            </div>
+            <p class="start-subtitle">2026 未来主义 · 宫廷推演引擎</p>
+            <button id="start-btn" class="start-action-btn">
+                <span class="btn-text">开启重生</span>
+                <div class="btn-glow"></div>
+            </button>
         </div>
+        <div class="start-particles" id="start-particles"></div>
+    </div>
 
         <!-- 游戏主屏幕 -->
         <div id="game-screen" style="display: none; flex-direction: column; height: 100%;">
